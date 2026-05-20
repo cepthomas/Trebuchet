@@ -35,10 +35,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libs\IconicSelector\IconicSelector.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Reference Include="Ephemera.IconicSelector">
+      <HintPath>lib\Ephemera.IconicSelector.dll</HintPath>
+    </Reference>
     <Reference Include="Ephemera.NBagOfTricks">
       <HintPath>lib\Ephemera.NBagOfTricks.dll</HintPath>
     </Reference>

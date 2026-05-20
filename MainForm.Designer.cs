@@ -37,10 +37,8 @@ namespace WinStart
             // 
             // selector
             // 
-            selector.AllowDrop = true;
             selector.AllowExternalDrop = false;
             selector.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            selector.ImageSize = 32;
             selector.Location = new Point(3, 5);
             selector.Name = "selector";
             selector.Size = new Size(389, 448);

@@ -19,7 +19,7 @@ namespace WinStart
         [Browsable(false)]
         public string Name { get; set; } = "";
 
-        /// <summary>Group. TODO!</summary>
+        /// <summary>Group. TODO1</summary>
         [Browsable(false)]
         public string Group { get; set; } = "";
 
@@ -47,6 +47,15 @@ namespace WinStart
         [JsonConverter(typeof(JsonColorConverter))]
         public Color MarkerColor { get; set; } = Color.Blue;
 
+        [JsonConverter(typeof(JsonFontConverter))]
+        public Font TileFont { get; set; } = new("Calibri", 11, FontStyle.Regular, GraphicsUnit.Point, 0);
+
+        //[DisplayName("Root Paths")]
+        //[Description("Your favorite places.")]
+        //[Browsable(true)]
+        //[Editor(typeof(StringListEditor), typeof(UITypeEditor))]
+        //public List<string> RootDirs { get; set; } = [];
+
         [DisplayName("File Log Level")]
         [Description("Log level for file write.")]
         [Browsable(true)]
@@ -58,15 +67,6 @@ namespace WinStart
         [Browsable(true)]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public LogLevel NotifLogLevel { get; set; } = LogLevel.Debug;
-
-        [JsonConverter(typeof(JsonFontConverter))]
-        public Font TileFont { get; set; } = new("Calibri", 11, FontStyle.Regular, GraphicsUnit.Point, 0);
-
-        //[DisplayName("Root Paths")]
-        //[Description("Your favorite places.")]
-        //[Browsable(true)]
-        //[Editor(typeof(StringListEditor), typeof(UITypeEditor))]
-        //public List<string> RootDirs { get; set; } = [];
         #endregion
 
         #region Persisted Non-editable Properties
