@@ -108,132 +108,70 @@ namespace WinStart
             _defaultImage = Icon.ExtractIcon("shell32.dll", 23, false)!.ToBitmap();
 
             // Init the data.
-            _settings.Targets.ForEach(item => AddTarget(item));
+            //_settings.Targets.ForEach(item => AddTarget(item));
+
+            DoDummy();
         }
 
-
-        void Dummy()
+        /// <summary>
+        /// 
+        /// </summary>
+        void DoDummy()
         {
-            /*
-Windows standard locations
+            string[] locs =
+            [
+                // Windows standard locations
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Everything.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Excel.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Firefox.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\MIDI Settings.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Notepad++.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Sublime Text.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 2022.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\WinDirStat.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Word.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools\Performance Monitor.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools\Registry Editor.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools\Resource Monitor.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Git\Git Bash.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Logi\Logi Options+.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\LOUD Technologies Inc\LOUD Technologies Inc. Mackie USB\Mackie Control Panel.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\REAPER (x64)\REAPER (x64).lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\System Tools\Task Manager.lnk",
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\VirtualMIDISynth\VirtualMIDISynth.lnk",
+                // Win-X/Start context menu
+                //@"C:\Users\cepth\AppData\Local\Microsoft\Windows\WinX\Group2\1 - Run.lnk",
+                //@"C:\Users\cepth\AppData\Local\Microsoft\Windows\WinX\Group2\2 - Search.lnk",
+                //@"C:\Users\cepth\AppData\Local\Microsoft\Windows\WinX\Group2\3 - Windows Explorer.lnk",
+                //@"C:\Users\cepth\AppData\Local\Microsoft\Windows\WinX\Group2\4 - Control Panel.lnk",
+                // Plain files
+                @"C:\Users\cepth\OneDrive\Tools\backup_loose.py",
+                @"C:\Users\cepth\OneDrive\Tools\Wavosaur.exe",
+                @"C:\Users\cepth\OneDrive\Tools\procexp.exe",
+                @"C:\Dev\Libs\IconicSelector\Test\Files\color_wheel.png",
+                @"C:\Users\cepth\OneDrive\OneDriveDocuments\eat\Dried Cherry Scones.txt",
+                @"C:\Users\cepth\OneDrive\OneDriveDocuments\eat\food-places.xlsx",
+                @"C:\Users\cepth\OneDrive\OneDriveDocuments\eat\makepage.py",
+                @"C:\Users\cepth\OneDrive\OneDriveDocuments\eat\faves\bean-potato-gratin.pdf",
+                @"C:\Users\cepth\OneDrive\OneDriveDocuments\eat\faves\Beans.docx",
+                // Plain folders
+                @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
+                @"C:\Users\cepth\OneDrive\OneDriveDocuments",
+                @"C:\Dev\Apps",
+                // URLs
+                @"https://github.com/oozcitak/imagelistview",
+                @"https://www.bobrosslipsum.com/",
+                @"https://en.wikipedia.org/wiki/INI_file",
+            ];
+            
+            // Others::
+            //   User Start menu => %APPDATA%\Microsoft\Windows\Start Menu\Programs\+subdirs...
+            //   Taskbar pinned => %APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar
+            //   Recent files => %APPDATA%\Microsoft\Windows\Recent and %APPDATA%\Microsoft\Office\Recent
 
--  All programs available in Start menu => %PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs +subdirs
-C:\ProgramData\Microsoft\Windows\Start Menu\Programs
-    |   Access.lnk (2k)
-    |   Blend for Visual Studio 2022.lnk (1k)
-    |   Everything.lnk (1k)
-    |   Excel.lnk (2k)
-    |   Firefox Private Browsing.lnk (1k)
-    |   Firefox.lnk (1k)
-    |   Microsoft Edge.lnk (2k)
-    |   MIDI Settings.lnk (1k)
-    |   Notepad++.lnk (879b)
-    |   NZXT CAM.lnk (1k)
-    |   OneNote.lnk (2k)
-    |   PowerPoint.lnk (2k)
-    |   Publisher.lnk (2k)
-    |   Sticky Notes (new).lnk (2k)
-    |   Sublime Text.lnk (915b)
-    |   Visual Studio 2022.lnk (1k)
-    |   Visual Studio Installer.lnk (1k)
-    |   WinDirStat.lnk (1k)
-    |   Word.lnk (2k)
-    +---7-Zip
-    |       7-Zip File Manager.lnk (778b)
-    |       7-Zip Help.lnk (783b)
-    +---Administrative Tools
-    |       Event Viewer.lnk (1k)
-    |       Performance Monitor.lnk (1k)
-    |       Registry Editor.lnk (1k)
-    |       Resource Monitor.lnk (1k)
-    |       System Configuration.lnk (1k)
-    +---Brother
-    |       Brother Utilities.lnk (2k)
-    +---Git
-    |       Git Bash.lnk (1k)
-    |       Git CMD.lnk (1k)
-    |       Git GUI.lnk (1k)
-    +---H&R Block 2024
-    +---H&R Block 2025
-    |       H&R Block 2025.lnk (1k)
-    +---JetBrains
-    |       JetBrains Rider 2025.3.2.lnk (1k)
-    |       PyCharm 2025.3.2.1.lnk (1k)
-    +---LibreOffice
-    |       LibreOffice Calc.lnk (1k)
-    |       LibreOffice Draw.lnk (1k)
-    |       LibreOffice Math.lnk (1k)
-    |       LibreOffice Writer.lnk (1k)
-    |       LibreOffice.lnk (1k)
-    +---Logi
-    |       Logi Options+.lnk (877b)
-    +---LOUD Technologies Inc\LOUD Technologies Inc. Mackie USB
-    |       Mackie Control Panel.lnk (1k)
-    +---Maintenance
-    +---Microsoft Office
-    |   |   Microsoft Excel 2010.lnk (2k)
-    |   |   Microsoft Word 2010.lnk (2k)
-    +---Microsoft Office Tools
-    +---PuTTY (64-bit)
-    |       PuTTY.lnk (1021b)
-    +---REAPER (x64)
-    |       REAPER (x64).lnk (961b)
-    +---Startup
-    +---System Tools
-    |       Task Manager.lnk (1k)
-    +---TortoiseGit
-    |       TortoiseGit.lnk (1k)
-    |       TortoiseGitBlame.lnk (1k)
-    |       TortoiseGitIDiff.lnk (1k)
-    |       TortoiseGitMerge.lnk (1k)
-    +---VirtualMIDISynth
-    |       VirtualMIDISynth.lnk (969b)
-    +---Visual Studio 2022
-    |   \---Visual Studio Tools
-    |       |   Developer Command Prompt for VS 2022.lnk (2k)
-    +---Windows Kits
-    +---Windows PowerShell
-    |       Windows PowerShell ISE (x86).lnk (1k)
-    |       Windows PowerShell ISE.lnk (1k)
-    \---WinMerge
-            User's Guide.lnk (976b)
-            WinMerge.lnk (975b)
-
-
--  Win-X/Start context menu => %LOCALAPPDATA%\Microsoft\Windows\WinX\GroupX
-    +---C:\Users\cepth\AppData\Local\Microsoft\Windows\WinX\Group1
-    |       1 - Desktop.lnk (1k)
-    +---C:\Users\cepth\AppData\Local\Microsoft\Windows\WinX\Group2
-    |       1 - Run.lnk (1k)
-    |       2 - Search.lnk (1k)
-    |       3 - Windows Explorer.lnk (1k)
-    |       4 - Control Panel.lnk (1k)
-    |       5 - Task Manager.lnk (1021b)
-    \---C:\Users\cepth\AppData\Local\Microsoft\Windows\WinX\Group3
-            01a - Windows PowerShell.lnk (1k)
-            02a - Windows PowerShell.lnk (1k)
-            03 - Computer Management.lnk (1015b)
-            04 - Disk Management.lnk (1015b)
-            04-1 - NetworkStatus.lnk (1k)
-            05 - Device Manager.lnk (1k)
-            06 - SystemAbout.lnk (1k)
-            07 - Event Viewer.lnk (1015b)
-            08 - PowerAndSleep.lnk (1k)
-            09 - Mobility Center.lnk (1015b)
-            10 - AppsAndFeatures.lnk (1k)
-
-
-Others::
-  - User Start menu => %APPDATA%\Microsoft\Windows\Start Menu\Programs\+subdirs...
-  - Taskbar pinned => %APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar
-  - Recent files => %APPDATA%\Microsoft\Windows\Recent and %APPDATA%\Microsoft\Office\Recent
-*/
-
-
-
-
-
+            locs.ForEach(item => AddTarget(item));
         }
+
         /// <summary>
         /// User wants to do something.
         /// </summary>
@@ -264,7 +202,7 @@ Others::
                     break;
 
                 case "Remove":
-//                    selector.RemoveSelectedItems();
+//TODO1                    selector.RemoveSelectedItems();
                     break;
             }
         }
@@ -326,36 +264,45 @@ Others::
             // Link?
             if (targetnamelc.EndsWith(".lnk"))
             {
-                // What is it pointing to?
-                var sl = ShellObject.FromParsingName(targetname);
-                var ft = ((ShellLink)sl).TargetLocation;
-
-                // File?
-                if (File.Exists(ft))
+                try
                 {
-                    FileInfo finfo = new(ft);
-                    text = finfo.Name;
-                    fulltargetname = ft;
+                    // What is it pointing to?
+                    var sl = ShellObject.FromParsingName(targetname);
+                    var ft = ((ShellLink)sl).TargetLocation;
 
-                    var icon = Icon.ExtractAssociatedIcon(ft);
-                    if (icon != null)
+                    // File?
+                    if (File.Exists(ft))
                     {
-                        image = icon.ToBitmap();
+                        FileInfo finfo = new(ft);
+                        text = finfo.Name;
+                        fulltargetname = ft;
+
+                        var icon = Icon.ExtractAssociatedIcon(ft);
+                        if (icon != null)
+                        {
+                            image = icon.ToBitmap();
+                        }
                     }
+                    // Directory?
+                    else if (Directory.Exists(ft))
+                    {
+                        DirectoryInfo dinfo = new(ft);
+                        text = dinfo.Name;
+                        fulltargetname = ft;
+                        image = _folderImage;
+                    }
+                    else
+                    {
+                        _logger.Error($"Invalid target for link [{targetname}]");
+                    }
+
                 }
-                // Directory?
-                else if (Directory.Exists(ft))
-                {
-                    DirectoryInfo dinfo = new(ft);
-                    text = dinfo.Name;
-                    fulltargetname = ft;
-                    image = _folderImage;
-                }
-                else
+                catch (Exception)
                 {
                     _logger.Error($"Invalid link [{targetname}]");
                 }
             }
+
             // File?
             else if (File.Exists(targetname))
             {
@@ -414,7 +361,10 @@ Others::
         /// <param name="e"></param>
         void Selector_Click(object? sender, ClickEventArgs e)
         {
-            //_logger.Info($"Selection -> [{e.Entry.Text}] [{e.Entry.ImageName}] [{e.Entry.Tag}]");
+            _logger.Info($"Selection -> [{e.ClickedItem.Caption}] [{e.ClickedItem.Value}]");
+
+            // if folder: explorer "c:\dev"
+            // if url: start https://www.bobrosslipsum.com/
 
             ProcessStartInfo pinfo = new("cmd", ["/C", e.ClickedItem.Value.ToString()!])
             {
@@ -433,10 +383,18 @@ Others::
                 // TIL: To avoid deadlocks, always read the output stream first and then wait.
                 var stdout = proc.StandardOutput.ReadToEnd();
                 var stderr = proc.StandardError.ReadToEnd();
+                int code = proc.ExitCode;
 
                 // LogInfo("Wait for process to exit...");
                 proc.WaitForExit();
-                // proc.ExitCode, stdout, stderr
+
+                // TODO1 proc.ExitCode, stdout, stderr
+                _logger.Info($"{stdout}");
+
+                if (code != 0)
+                {
+                    _logger.Error($"code:{code} {stderr}");
+                }
 
             }
             catch (Exception ex)
@@ -463,9 +421,12 @@ Others::
         /// <param name="s"></param>
         void Tell(string s)
         {
-            rtbTell.AppendText(s);
-            rtbTell.AppendText(Environment.NewLine);
-            rtbTell.ScrollToCaret();
+            this.InvokeIfRequired(_ =>
+            {
+                rtbTell.AppendText(s);
+                rtbTell.AppendText(Environment.NewLine);
+                rtbTell.ScrollToCaret();
+            });
         }
         #endregion
 

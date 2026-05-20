@@ -20,18 +20,17 @@ namespace WinStart
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             rtbTell = new RichTextBox();
             selector = new Selector();
-            txtTrace = new TextBox();
             SuspendLayout();
             // 
             // rtbTell
             // 
             rtbTell.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            rtbTell.Location = new Point(409, 139);
+            rtbTell.BorderStyle = BorderStyle.FixedSingle;
+            rtbTell.Location = new Point(431, 5);
             rtbTell.Name = "rtbTell";
-            rtbTell.Size = new Size(581, 314);
+            rtbTell.Size = new Size(516, 448);
             rtbTell.TabIndex = 0;
             rtbTell.Text = "";
             // 
@@ -39,38 +38,35 @@ namespace WinStart
             // 
             selector.AllowExternalDrop = false;
             selector.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            selector.AutoScroll = true;
+            selector.BorderStyle = BorderStyle.FixedSingle;
+            selector.DrawFont = new Font("Calibri", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            selector.ImageSize = new Size(32, 32);
+            selector.IndicatorColor = Color.Purple;
             selector.Location = new Point(3, 5);
+            selector.Mode = OpMode.Click;
             selector.Name = "selector";
-            selector.Size = new Size(389, 448);
+            selector.NumColumns = 1;
+            selector.Pad = 4;
+            selector.Size = new Size(111, 448);
+            selector.Spacing = 10;
+            selector.Style = SelectorStyle.Icon;
             selector.TabIndex = 7;
-            // 
-            // txtTrace
-            // 
-            txtTrace.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            txtTrace.BorderStyle = BorderStyle.FixedSingle;
-            txtTrace.Location = new Point(409, 76);
-            txtTrace.Name = "txtTrace";
-            txtTrace.ReadOnly = true;
-            txtTrace.Size = new Size(581, 26);
-            txtTrace.TabIndex = 9;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1002, 460);
-            Controls.Add(txtTrace);
+            ClientSize = new Size(959, 460);
             Controls.Add(selector);
             Controls.Add(rtbTell);
             Name = "MainForm";
             Text = "1";
             ResumeLayout(false);
-            PerformLayout();
         }
         #endregion
 
         private Selector selector;
         private RichTextBox rtbTell;
-        private TextBox txtTrace;
     }
 }
