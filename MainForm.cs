@@ -34,11 +34,11 @@ namespace WinStart
         /// <summary>The settings.</summary>
         readonly UserSettings _settings;
 
-        /// <summary>Folder.</summary>
-        readonly Bitmap _folderImage;
+        ///// <summary>Folder.</summary>
+        //readonly Bitmap _folderImage;
 
-        /// <summary>URL.</summary>
-        readonly Bitmap _urlImage;
+        ///// <summary>URL.</summary>
+        //readonly Bitmap _urlImage;
 
         /// <summary>Default if not available.</summary>
         readonly Bitmap _defaultImage;
@@ -85,7 +85,7 @@ namespace WinStart
             selector.Style = SelectorStyle.Icon;
             selector.Mode = OpMode.Click;
             selector.NumColumns = 4;
-            selector.AllowExternalDrop = true;
+            selector.AllowExternalSource = true;
             selector.Spacing = 10;
             selector.Pad = 8;
 
@@ -102,10 +102,11 @@ namespace WinStart
             selector.ContextMenuStrip.Items.Add("Remove");
             selector.ContextMenuStrip.ItemClicked += Menu_ItemClicked;
 
-            // Grab some system icons. Selector takes ownership of lifetime.
-            _folderImage = Icon.ExtractIcon("shell32.dll", 3, false)!.ToBitmap();
-            _urlImage = Icon.ExtractIcon("shell32.dll", 13, false)!.ToBitmap();
-            _defaultImage = Icon.ExtractIcon("shell32.dll", 23, false)!.ToBitmap();
+            // Big X
+            _defaultImage = new(32, 32);
+            using Graphics gr = Graphics.FromImage(_defaultImage);
+            gr.Clear(Color.LightSalmon);
+            gr.DrawString($"????", Font, Brushes.Black, 2, 2);
 
             // Init the data.
             //_settings.Targets.ForEach(item => AddTarget(item));
@@ -120,7 +121,7 @@ namespace WinStart
         {
             string[] locs =
             [
-                // Windows standard locations
+                // Windows standard locations  %PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs
                 @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Everything.lnk",
                 @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Excel.lnk",
                 @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Firefox.lnk",
@@ -139,7 +140,7 @@ namespace WinStart
                 @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\REAPER (x64)\REAPER (x64).lnk",
                 @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\System Tools\Task Manager.lnk",
                 @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\VirtualMIDISynth\VirtualMIDISynth.lnk",
-                // Win-X/Start context menu
+                // Win-X/Start context menu  %LOCALAPPDATA%\Microsoft\Windows\WinX\GroupX => don't use
                 //@"C:\Users\cepth\AppData\Local\Microsoft\Windows\WinX\Group2\1 - Run.lnk",
                 //@"C:\Users\cepth\AppData\Local\Microsoft\Windows\WinX\Group2\2 - Search.lnk",
                 //@"C:\Users\cepth\AppData\Local\Microsoft\Windows\WinX\Group2\3 - Windows Explorer.lnk",
@@ -253,16 +254,18 @@ namespace WinStart
         /// <param name="target"></param>
         void AddTarget(Target target)
         {
+            ItemDataType dtype = ItemDataType.None;
             string text = "???";
             string targetname = target.Name;
             string targetnamelc = targetname.ToLower();
             string fulltargetname = "";
             Bitmap image = _defaultImage;
 
-            ///// Determine target type.
+
+            ///// Determine target type. =======> this is in selector now
 
             // Link?
-            if (targetnamelc.EndsWith(".lnk"))
+            if (targetnamelc.EndsWith(".lnk")) //check is-a-link?
             {
                 try
                 {
@@ -355,52 +358,65 @@ namespace WinStart
         }
 
         /// <summary>
-        /// User clicked a selection. Execute it.
+        /// User clicked something.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void Selector_Click(object? sender, ClickEventArgs e)
         {
-            _logger.Info($"Selection -> [{e.ClickedItem.Caption}] [{e.ClickedItem.Value}]");
-
-            // if folder: explorer "c:\dev"
-            // if url: start https://www.bobrosslipsum.com/
-
-            ProcessStartInfo pinfo = new("cmd", ["/C", e.ClickedItem.Value.ToString()!])
+            if (e.ClickedItem is not null)
             {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-            };
+                // Item click.
 
-            try
-            {
-                using Process proc = new() { StartInfo = pinfo };
-                proc.Start();
+                // if folder: explorer "c:\dev"
+                // if url: start https://www.bobrosslipsum.com/
+                // else cmd
 
-                // TIL: To avoid deadlocks, always read the output stream first and then wait.
-                var stdout = proc.StandardOutput.ReadToEnd();
-                var stderr = proc.StandardError.ReadToEnd();
-                int code = proc.ExitCode;
-
-                // LogInfo("Wait for process to exit...");
-                proc.WaitForExit();
-
-                // TODO1 proc.ExitCode, stdout, stderr
-                _logger.Info($"{stdout}");
-
-                if (code != 0)
+                ProcessStartInfo pinfo = new("cmd", ["/C", e.ClickedItem.Value.ToString()!])
                 {
-                    _logger.Error($"code:{code} {stderr}");
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                };
+
+                try
+                {
+                    using Process proc = new() { StartInfo = pinfo };
+                    proc.Start();
+
+                    // TIL: To avoid deadlocks, always read the output stream first and then wait.
+                    var stdout = proc.StandardOutput.ReadToEnd();
+                    var stderr = proc.StandardError.ReadToEnd();
+                    int code = proc.ExitCode;
+
+                    // LogInfo("Wait for process to exit...");
+                    proc.WaitForExit();
+
+                    // TODO1 proc.ExitCode, stdout, stderr
+                    _logger.Info($"{stdout}");
+
+                    if (code != 0)
+                    {
+                        _logger.Error($"code:{code} {stderr}");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error($"Execute failed [{ex.Message}]");
                 }
 
             }
-            catch (Exception ex)
+            else
             {
-                _logger.Error($"Execute failed [{ex.Message}]");
+                // Item selection(s).
+
+
             }
+            _logger.Info($"Selection -> [{e.ClickedItem.Caption}] [{e.ClickedItem.Value}]");
+
         }
         #endregion
 

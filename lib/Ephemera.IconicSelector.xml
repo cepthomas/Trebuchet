@@ -4,8 +4,14 @@
         <name>Ephemera.IconicSelector</name>
     </assembly>
     <members>
+        <member name="T:Ephemera.IconicSelector.ItemDataType">
+            <summary>Value data type.</summary>
+        </member>
         <member name="T:Ephemera.IconicSelector.Item">
             <summary>Describes one item in the collection. Part of API.</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Item.DataType">
+            <summary>Value text</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.Item.Caption">
             <summary>Displayed text</summary>
@@ -16,7 +22,7 @@
         <member name="P:Ephemera.IconicSelector.Item.Value">
             <summary>Carries data supplied by client.</summary>
         </member>
-        <member name="M:Ephemera.IconicSelector.Item.#ctor(System.String,System.Drawing.Bitmap,System.Object)">
+        <member name="M:Ephemera.IconicSelector.Item.#ctor(Ephemera.IconicSelector.ItemDataType,System.String,System.Drawing.Bitmap,System.Object)">
             <summary>Normal constructor</summary>
         </member>
         <member name="M:Ephemera.IconicSelector.Item.#ctor(Ephemera.IconicSelector.Item)">
@@ -28,47 +34,23 @@
         <member name="M:Ephemera.IconicSelector.Item.ToString">
             <summary>Read me</summary>
         </member>
-        <member name="T:Ephemera.IconicSelector.DroppedPayloadType">
-            <summary>Drag and drop payload data.</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.DroppedPayloadType.None">
-            <summary>Default</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.DroppedPayloadType.File">
-            <summary>File name</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.DroppedPayloadType.Url">
-            <summary>URL</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.DroppedPayloadType.Item">
-            <summary>Internal - DisplayItem</summary>
-        </member>
         <member name="T:Ephemera.IconicSelector.CursorLocation">
             <summary>Where the cursor is in ItemDisplay.</summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.CursorLocation.None">
-            <summary>Default</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.CursorLocation.Left">
-            <summary></summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.CursorLocation.Right">
-            <summary></summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.CursorLocation.Center">
-            <summary></summary>
+        <member name="T:Ephemera.IconicSelector.DroppedDataType">
+            <summary>Drag and drop payload data type.</summary>
         </member>
         <member name="T:Ephemera.IconicSelector.DroppedPayloadEventArgs">
             <summary>User drag-dropped something from elsewhere.</summary>
         </member>
-        <member name="M:Ephemera.IconicSelector.DroppedPayloadEventArgs.#ctor(Ephemera.IconicSelector.DroppedPayloadType,System.Object)">
+        <member name="M:Ephemera.IconicSelector.DroppedPayloadEventArgs.#ctor(Ephemera.IconicSelector.DroppedDataType,System.Object)">
             <summary>User drag-dropped something from elsewhere.</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.DroppedPayloadEventArgs.DataType">
             <summary>The payload type</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.DroppedPayloadEventArgs.Payload">
-            <summary>The target</summary>
+            <summary>The drag source</summary>
         </member>
         <member name="M:Ephemera.IconicSelector.DroppedPayloadEventArgs.ToString">
             <summary>Read me.</summary>
@@ -96,8 +78,8 @@
         <member name="F:Ephemera.IconicSelector.ItemDisplay.Selected">
             <summary></summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.ItemDisplay.AllowExternalDrop">
-            <summary></summary>
+        <member name="P:Ephemera.IconicSelector.ItemDisplay.AllowExternalSource">
+            <summary>Allow drag and drop frome external sources - file/folder/url only.</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.ItemDisplay.ImageRect">
             <summary>Geometry.</summary>
@@ -133,7 +115,7 @@
         </member>
         <member name="M:Ephemera.IconicSelector.ItemDisplay.OnDragEnter(System.Windows.Forms.DragEventArgs)">
             <summary>
-            Sets the target drop effect.
+            Sets the drop effect.
             </summary>
             <param name="e"></param>
         </member>
@@ -180,13 +162,6 @@
             </summary>
             <param name="pe"></param>
         </member>
-        <member name="M:Ephemera.IconicSelector.ItemDisplay.GetTargetType(System.Windows.Forms.DragEventArgs)">
-            <summary>
-            Helper function.
-            </summary>
-            <param name="e"></param>
-            <returns></returns>
-        </member>
         <member name="M:Ephemera.IconicSelector.ItemDisplay.TraceLine(System.String)">
             <summary>
             Hello.
@@ -227,31 +202,16 @@
             <summary>Standard single click.</summary>
         </member>
         <member name="T:Ephemera.IconicSelector.ClickEventArgs">
-            <summary>User clicked item.</summary>
+            <summary>
+            User clicked. If item is not null it's a simple click: OpMode is Click.
+            Else it's a notification that selection(s) changed: OpMode is *Select.
+            </summary>
         </member>
         <member name="M:Ephemera.IconicSelector.ClickEventArgs.#ctor(Ephemera.IconicSelector.Item)">
-            <summary>User clicked item.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.ClickEventArgs.ClickedItem">
-            <summary>The item</summary>
-        </member>
-        <member name="T:Ephemera.IconicSelector.SelectionEventArgs">
-            <summary>User selection(s) have changed.</summary>
-        </member>
-        <member name="M:Ephemera.IconicSelector.SelectionEventArgs.#ctor(System.Collections.Generic.List{Ephemera.IconicSelector.Item})">
-            <summary>User selection(s) have changed.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.SelectionEventArgs.SelectedItems">
-            <summary>The selection(s)</summary>
-        </member>
-        <member name="T:Ephemera.IconicSelector.TraceEventArgs">
-            <summary>Debugging.</summary>
-        </member>
-        <member name="M:Ephemera.IconicSelector.TraceEventArgs.#ctor(System.String)">
-            <summary>Debugging.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.TraceEventArgs.Line">
-            <summary>Log line.</summary>
+            <summary>
+            User clicked. If item is not null it's a simple click: OpMode is Click.
+            Else it's a notification that selection(s) changed: OpMode is *Select.
+            </summary>
         </member>
         <member name="T:Ephemera.IconicSelector.Selector">
             <summary>API.</summary>
@@ -269,8 +229,8 @@
         <member name="P:Ephemera.IconicSelector.Selector.Mode">
             <summary>What the mouse click does.</summary>
         </member>
-        <member name="P:Ephemera.IconicSelector.Selector.AllowExternalDrop">
-            <summary>Allow drag and drop (files) from other applications.</summary>
+        <member name="P:Ephemera.IconicSelector.Selector.AllowExternalSource">
+            <summary>Allow drag and drop frome external sources - file/folder/url only.</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.Selector.DrawFont">
             <summary>Cosmetics.</summary>
@@ -278,36 +238,37 @@
         <member name="P:Ephemera.IconicSelector.Selector.IndicatorColor">
             <summary>Cosmetics.</summary>
         </member>
-        <member name="P:Ephemera.IconicSelector.Selector.DefaultImage">
-            <summary>If no valid image available.</summary>
-        </member>
         <member name="P:Ephemera.IconicSelector.Selector.Pad">
             <summary>Visual space at edges.</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.Selector.Spacing">
             <summary>Space between items</summary>
         </member>
+        <member name="P:Ephemera.IconicSelector.Selector.DefaultImage">
+            <summary>If no valid image available.</summary>
+        </member>
         <member name="E:Ephemera.IconicSelector.Selector.Click">
             <summary>Tell client that item was clicked - OpMode = Click.</summary>
-        </member>
-        <member name="E:Ephemera.IconicSelector.Selector.Selection">
-            <summary>Tell client that selection(s) have changed - OpMode = *Select.</summary>
-        </member>
-        <member name="E:Ephemera.IconicSelector.Selector.Trace">
-            <summary>Debug hook - something permanent?</summary>
         </member>
         <member name="M:Ephemera.IconicSelector.Selector.#ctor">
             <summary>
             Constructor.
             </summary>
         </member>
-        <member name="M:Ephemera.IconicSelector.Selector.AddItem(System.String,System.Drawing.Bitmap,System.Object,System.Int32)">
+        <member name="M:Ephemera.IconicSelector.Selector.AddResourceItem(System.String,System.Int32)">
             <summary>
-            Add a new item.
+            Add a resource - file, directory, url. Will determine the type, icon, and caption.
             </summary>
-            <param name="caption">For display below/next to image</param>
-            <param name="bmp">Bitmap</param>
-            <param name="value">Meaningful for client use</param>
+            <param name="name"></param>
+            <param name="index">Where to insert, -1 is append</param>
+        </member>
+        <member name="M:Ephemera.IconicSelector.Selector.AddUserItem(System.String,System.Drawing.Bitmap,System.Object,System.Int32)">
+            <summary>
+            Add a user-defined item.
+            </summary>
+            <param name="caption"></param>
+            <param name="bmp"></param>
+            <param name="value"></param>
             <param name="index">Where to insert, -1 is append</param>
         </member>
         <member name="M:Ephemera.IconicSelector.Selector.GetAllItems">
@@ -316,20 +277,23 @@
             </summary>
             <returns>Items.</returns>
         </member>
+        <member name="M:Ephemera.IconicSelector.Selector.GetSelectedItems">
+            <summary>
+            Get selected items.
+            </summary>
+            <returns>Items.</returns>
+        </member>
         <member name="F:Ephemera.IconicSelector.Selector._style">
-            <summary>Current config.</summary>
+            <summary>Backing field for Style.</summary>
         </member>
         <member name="F:Ephemera.IconicSelector.Selector._numColumns">
-            <summary>Current config.</summary>
+            <summary>Backing field for NumColumns.</summary>
         </member>
         <member name="F:Ephemera.IconicSelector.Selector._imageSize">
-            <summary>Image size.</summary>
+            <summary>Backing field for ImageSize.</summary>
         </member>
         <member name="F:Ephemera.IconicSelector.Selector._itemds">
             <summary>All entries in the collection.</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.Selector._defaultImage">
-            <summary>If no valid image available.</summary>
         </member>
         <member name="F:Ephemera.IconicSelector.Selector._itemdImageRect">
             <summary>ItemDisplay geometry.</summary>
@@ -348,6 +312,12 @@
         </member>
         <member name="F:Ephemera.IconicSelector.Selector.IN_TARGET_CENTER">
             <summary>Meta index.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.Selector._dirImage">
+            <summary>For dirs.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.Selector._urlImage">
+            <summary>If no favicon available.</summary>
         </member>
         <member name="M:Ephemera.IconicSelector.Selector.Dispose(System.Boolean)">
             <summary>
@@ -382,6 +352,16 @@
             </summary>
             <param name="pe"></param>
         </member>
+        <member name="M:Ephemera.IconicSelector.Selector.AddItem(Ephemera.IconicSelector.ItemDataType,System.String,System.Drawing.Bitmap,System.Object,System.Int32)">
+            <summary>
+            Common function to add a new item. Adjusts image for mode.
+            </summary>
+            <param name="dtype">The value type</param>
+            <param name="caption">For display below/next to image</param>
+            <param name="bmp">Bitmap</param>
+            <param name="value">Meaningful for client use</param>
+            <param name="index">Where to insert, -1 is append</param>
+        </member>
         <member name="M:Ephemera.IconicSelector.Selector.InitGeometry">
             <summary>
             Calculates geometry of display elements.
@@ -391,13 +371,6 @@
             <summary>
             Called after list changes.
             </summary>
-        </member>
-        <member name="M:Ephemera.IconicSelector.Selector.ResizeBitmap(System.Drawing.Bitmap,System.Int32,System.Int32)">
-            <summary>Resize the image to the specified width and height.</summary>
-            <param name="bmp">The image to resize.</param>
-            <param name="width">The width to resize to.</param>
-            <param name="height">The height to resize to.</param>
-            <returns>The resized image.</returns>
         </member>
         <member name="M:Ephemera.IconicSelector.Selector.RemoveItem(Ephemera.IconicSelector.ItemDisplay)">
             <summary>
@@ -426,7 +399,7 @@
         </member>
         <member name="M:Ephemera.IconicSelector.Selector.TraceLine(System.String)">
             <summary>
-            
+            Debug.
             </summary>
             <param name="line"></param>
         </member>
