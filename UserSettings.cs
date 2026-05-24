@@ -41,6 +41,10 @@ namespace WinStart
         [Browsable(true)]
         public int ImageSize { get; set; } = 32;
 
+        [DisplayName("How wide")]
+        [Browsable(true)]
+        public int NumColumns { get; set; } = 4;
+
         [DisplayName("Marker Color")]
         [Description("The color used for markers.")]
         [Browsable(true)]
@@ -48,7 +52,7 @@ namespace WinStart
         public Color MarkerColor { get; set; } = Color.Blue;
 
         [JsonConverter(typeof(JsonFontConverter))]
-        public Font TileFont { get; set; } = new("Calibri", 11, FontStyle.Regular, GraphicsUnit.Point, 0);
+        public Font Font { get; set; } = new("Calibri", 11, FontStyle.Regular, GraphicsUnit.Point, 0);
 
         //[DisplayName("Root Paths")]
         //[Description("Your favorite places.")]

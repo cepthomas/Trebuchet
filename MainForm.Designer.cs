@@ -20,53 +20,77 @@ namespace WinStart
         /// </summary>
         private void InitializeComponent()
         {
-            rtbTell = new RichTextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             selector = new Selector();
+            toolStrip1 = new ToolStrip();
+            toolStripButton1 = new ToolStripButton();
+            toolStripSeparator1 = new ToolStripSeparator();
+            toolStrip1.SuspendLayout();
             SuspendLayout();
-            // 
-            // rtbTell
-            // 
-            rtbTell.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            rtbTell.BorderStyle = BorderStyle.FixedSingle;
-            rtbTell.Location = new Point(431, 5);
-            rtbTell.Name = "rtbTell";
-            rtbTell.Size = new Size(516, 448);
-            rtbTell.TabIndex = 0;
-            rtbTell.Text = "";
             // 
             // selector
             // 
-            selector.AllowExternalDrop = false;
-            selector.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            selector.AllowExternalSource = false;
             selector.AutoScroll = true;
             selector.BorderStyle = BorderStyle.FixedSingle;
+            selector.DefaultImage = (Bitmap)resources.GetObject("selector.DefaultImage");
+            selector.Dock = DockStyle.Fill;
             selector.DrawFont = new Font("Calibri", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
             selector.ImageSize = new Size(32, 32);
             selector.IndicatorColor = Color.Purple;
-            selector.Location = new Point(3, 5);
+            selector.Location = new Point(0, 26);
             selector.Mode = OpMode.Click;
             selector.Name = "selector";
             selector.NumColumns = 1;
             selector.Pad = 4;
-            selector.Size = new Size(111, 448);
+            selector.Size = new Size(1104, 353);
             selector.Spacing = 10;
             selector.Style = SelectorStyle.Icon;
             selector.TabIndex = 7;
+            // 
+            // toolStrip1
+            // 
+            toolStrip1.ImageScalingSize = new Size(18, 18);
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripSeparator1 });
+            toolStrip1.Location = new Point(0, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(1104, 26);
+            toolStrip1.TabIndex = 8;
+            toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
+            toolStripButton1.ImageTransparentColor = Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new Size(37, 23);
+            toolStripButton1.Text = "bbb";
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(6, 26);
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(959, 460);
+            ClientSize = new Size(1104, 379);
             Controls.Add(selector);
-            Controls.Add(rtbTell);
+            Controls.Add(toolStrip1);
             Name = "MainForm";
-            Text = "1";
+            Text = "booga";
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
         #endregion
 
         private Selector selector;
-        private RichTextBox rtbTell;
+        private ToolStrip toolStrip1;
+        private ToolStripButton toolStripButton1;
+        private ToolStripSeparator toolStripSeparator1;
     }
 }

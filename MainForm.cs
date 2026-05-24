@@ -18,7 +18,6 @@ using Ephemera.IconicSelector;
 
 // TODO1 recent files? pin to start?
 
-// https://github.com/oozcitak/imagelistview
 
 namespace WinStart
 {
@@ -33,15 +32,6 @@ namespace WinStart
 
         /// <summary>The settings.</summary>
         readonly UserSettings _settings;
-
-        ///// <summary>Folder.</summary>
-        //readonly Bitmap _folderImage;
-
-        ///// <summary>URL.</summary>
-        //readonly Bitmap _urlImage;
-
-        /// <summary>Default if not available.</summary>
-        readonly Bitmap _defaultImage;
         #endregion
 
         #region Lifecycle
@@ -66,33 +56,30 @@ namespace WinStart
             LogManager.LogMessage += LogManager_LogMessage;
             LogManager.Run(logFileName, 50000);
 
-            // Main form.
-            Location = _settings.FormGeometry.Location;
-            Size = _settings.FormGeometry.Size;
-            WindowState = FormWindowState.Normal;
-
-            //WindowState = FormWindowState.Minimized;
-            StartPosition = FormStartPosition.Manual;
-            var pos = Cursor.Position;
-            Location = new Point(200, 200);
-
             Text = $"WinStart {MiscUtils.GetVersionString()}";
 
+            // Default - big X.
+            Bitmap defbmp = new(32, 32);
+            using Graphics gr = Graphics.FromImage(defbmp);
+            gr.Clear(Color.LightSalmon);
+            gr.DrawString($"????", Font, Brushes.Black, 2, 2);
+
             // Init selector properties.
-            selector.ImageSize = new(_settings.ImageSize, _settings.ImageSize);
-            selector.IndicatorColor = _settings.MarkerColor;
-            selector.DrawFont = _settings.TileFont;
+            selector.AllowExternalSource = true;
+            selector.AutoScroll = true;
+            //selector.Dock = DockStyle.Fill;
             selector.Style = SelectorStyle.Icon;
             selector.Mode = OpMode.Click;
-            selector.NumColumns = 4;
-            selector.AllowExternalSource = true;
             selector.Spacing = 10;
             selector.Pad = 8;
+            selector.DefaultImage = defbmp;
+            selector.DrawFont = _settings.Font;
+            selector.IndicatorColor = _settings.MarkerColor;
+            selector.ImageSize = new(_settings.ImageSize, _settings.ImageSize);
+            selector.NumColumns = _settings.NumColumns;
 
             // Hook selector events.
             selector.Click += Selector_Click;
-            //icsel.Selection += (sender, e) => { e.SelectedItems.ForEach(it => tvInfo.Append($"Selection -> [{it}]")); };
-            //icsel.Trace += (sender, e) => { tvInfo.Append($"Trace -> [{e.Line}]"); };
 
             // Selector menu.
             selector.ContextMenuStrip = new();
@@ -102,22 +89,24 @@ namespace WinStart
             selector.ContextMenuStrip.Items.Add("Remove");
             selector.ContextMenuStrip.ItemClicked += Menu_ItemClicked;
 
-            // Big X
-            _defaultImage = new(32, 32);
-            using Graphics gr = Graphics.FromImage(_defaultImage);
-            gr.Clear(Color.LightSalmon);
-            gr.DrawString($"????", Font, Brushes.Black, 2, 2);
-
             // Init the data.
-            //_settings.Targets.ForEach(item => AddTarget(item));
-
+            //_settings.Targets.ForEach(item => selector.AddResourceItem(item));
             DoDummy();
+
+            // Size and location. TODO1 probably user option? always/popup/?
+            FormBorderStyle = FormBorderStyle.SizableToolWindow;// FixedToolWindow;
+            StartPosition = FormStartPosition.Manual;
+            Size = new(selector.Width + SystemInformation.VerticalScrollBarWidth, 600);
+            WindowState = FormWindowState.Normal;
+            //WindowState = FormWindowState.Minimized;
+            var pos = Cursor.Position;
+            Location = new Point(200, 200);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        void DoDummy()
+        void DoDummy() //_TODO1_test()
         {
             string[] locs =
             [
@@ -170,7 +159,7 @@ namespace WinStart
             //   Taskbar pinned => %APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar
             //   Recent files => %APPDATA%\Microsoft\Windows\Recent and %APPDATA%\Microsoft\Office\Recent
 
-            locs.ForEach(item => AddTarget(item));
+            locs.ForEach(item => selector.AddResourceItem(item));
         }
 
         /// <summary>
@@ -181,7 +170,6 @@ namespace WinStart
         void Menu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
         {
             selector.ContextMenuStrip!.Close();
-            //int index = selector.SelectedIndexes.Count > 0 ? selector.SelectedIndexes[0] : -1;
 
             switch (e.ClickedItem!.Text)
             {
@@ -194,17 +182,17 @@ namespace WinStart
                     };
                     if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                     {
-                        AddTarget(dialog.FileName);
+                        selector.AddResourceItem(dialog.FileName);
                     }
                     break;
 
                 case "Paste":
-                    AddTarget(Clipboard.GetText());
+                    selector.AddResourceItem(Clipboard.GetText());
                     break;
 
-                case "Remove":
-//TODO1                    selector.RemoveSelectedItems();
-                    break;
+                //case "Remove": // TODO1
+                //    selector.RemoveSelectedItems();
+                //    break;
             }
         }
 
@@ -248,114 +236,114 @@ namespace WinStart
         #endregion
 
         #region Selector interaction
-        /// <summary>
-        /// Add an item.
-        /// </summary>
-        /// <param name="target"></param>
-        void AddTarget(Target target)
-        {
-            ItemDataType dtype = ItemDataType.None;
-            string text = "???";
-            string targetname = target.Name;
-            string targetnamelc = targetname.ToLower();
-            string fulltargetname = "";
-            Bitmap image = _defaultImage;
+        ///// <summary>
+        ///// Add an item.
+        ///// </summary>
+        ///// <param name="target"></param>
+        //void AddTarget(Target target)
+        //{
+        //    ItemDataType dtype = ItemDataType.None;
+        //    string text = "???";
+        //    string targetname = target.Name;
+        //    string targetnamelc = targetname.ToLower();
+        //    string fulltargetname = "";
+        //    Bitmap image = _defaultImage;
 
 
-            ///// Determine target type. =======> this is in selector now
+        //    ///// Determine target type. =======> this is in selector now
 
-            // Link?
-            if (targetnamelc.EndsWith(".lnk")) //check is-a-link?
-            {
-                try
-                {
-                    // What is it pointing to?
-                    var sl = ShellObject.FromParsingName(targetname);
-                    var ft = ((ShellLink)sl).TargetLocation;
+        //    // Link?
+        //    if (targetnamelc.EndsWith(".lnk")) //check is-a-link?
+        //    {
+        //        try
+        //        {
+        //            // What is it pointing to?
+        //            var sl = ShellObject.FromParsingName(targetname);
+        //            var ft = ((ShellLink)sl).TargetLocation;
 
-                    // File?
-                    if (File.Exists(ft))
-                    {
-                        FileInfo finfo = new(ft);
-                        text = finfo.Name;
-                        fulltargetname = ft;
+        //            // File?
+        //            if (File.Exists(ft))
+        //            {
+        //                FileInfo finfo = new(ft);
+        //                text = finfo.Name;
+        //                fulltargetname = ft;
 
-                        var icon = Icon.ExtractAssociatedIcon(ft);
-                        if (icon != null)
-                        {
-                            image = icon.ToBitmap();
-                        }
-                    }
-                    // Directory?
-                    else if (Directory.Exists(ft))
-                    {
-                        DirectoryInfo dinfo = new(ft);
-                        text = dinfo.Name;
-                        fulltargetname = ft;
-                        image = _folderImage;
-                    }
-                    else
-                    {
-                        _logger.Error($"Invalid target for link [{targetname}]");
-                    }
+        //                var icon = Icon.ExtractAssociatedIcon(ft);
+        //                if (icon != null)
+        //                {
+        //                    image = icon.ToBitmap();
+        //                }
+        //            }
+        //            // Directory?
+        //            else if (Directory.Exists(ft))
+        //            {
+        //                DirectoryInfo dinfo = new(ft);
+        //                text = dinfo.Name;
+        //                fulltargetname = ft;
+        //                image = _folderImage;
+        //            }
+        //            else
+        //            {
+        //                _logger.Error($"Invalid target for link [{targetname}]");
+        //            }
 
-                }
-                catch (Exception)
-                {
-                    _logger.Error($"Invalid link [{targetname}]");
-                }
-            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            _logger.Error($"Invalid link [{targetname}]");
+        //        }
+        //    }
 
-            // File?
-            else if (File.Exists(targetname))
-            {
-                FileInfo finfo = new(targetname);
-                text = finfo.Name;
-                fulltargetname = targetname;
+        //    // File?
+        //    else if (File.Exists(targetname))
+        //    {
+        //        FileInfo finfo = new(targetname);
+        //        text = finfo.Name;
+        //        fulltargetname = targetname;
 
-                var icon = Icon.ExtractAssociatedIcon(fulltargetname);
-                if (icon != null)
-                {
-                    image = icon.ToBitmap();
-                }
-            }
-            // Directory?
-            else if (Directory.Exists(targetname))
-            {
-                DirectoryInfo dinfo = new(targetname);
-                text = dinfo.Name;
-                fulltargetname = targetname;
-                image = _folderImage;
-            }
-            // URL?
-            else if (targetnamelc.StartsWith("http://") || targetnamelc.StartsWith("https://") || targetnamelc.StartsWith("file://"))
-            {
-                var parts = targetname.Split("://");
-                text = parts[1];
-                fulltargetname = targetname;
-                image = _urlImage;
-            }
-            // Not supported.
-            else
-            {
-                _logger.Error($"Invalid target [{targetname}]");
-            }
+        //        var icon = Icon.ExtractAssociatedIcon(fulltargetname);
+        //        if (icon != null)
+        //        {
+        //            image = icon.ToBitmap();
+        //        }
+        //    }
+        //    // Directory?
+        //    else if (Directory.Exists(targetname))
+        //    {
+        //        DirectoryInfo dinfo = new(targetname);
+        //        text = dinfo.Name;
+        //        fulltargetname = targetname;
+        //        image = _folderImage;
+        //    }
+        //    // URL?
+        //    else if (targetnamelc.StartsWith("http://") || targetnamelc.StartsWith("https://") || targetnamelc.StartsWith("file://"))
+        //    {
+        //        var parts = targetname.Split("://");
+        //        text = parts[1];
+        //        fulltargetname = targetname;
+        //        image = _urlImage;
+        //    }
+        //    // Not supported.
+        //    else
+        //    {
+        //        _logger.Error($"Invalid target [{targetname}]");
+        //    }
 
-            if (fulltargetname != "")
-            {
-                selector.AddItem(text, image, fulltargetname);
-            }
-        }
+        //    if (fulltargetname != "")
+        //    {
+        //        selector.AddItem(text, image, fulltargetname);
+        //    }
+        //}
 
-        /// <summary>
-        /// Add an item.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="group"></param>
-        void AddTarget(string name, string group = "")
-        {
-            AddTarget(new(){ Name = name, Group = group });
-        }
+        ///// <summary>
+        ///// Add an item.
+        ///// </summary>
+        ///// <param name="name"></param>
+        ///// <param name="group"></param>
+        //void AddTarget(string name, string group = "")
+        //{
+        //    AddTarget(new(){ Name = name, Group = group });
+        //}
 
         /// <summary>
         /// User clicked something.
@@ -394,12 +382,11 @@ namespace WinStart
                     // LogInfo("Wait for process to exit...");
                     proc.WaitForExit();
 
-                    // TODO1 proc.ExitCode, stdout, stderr
-                    _logger.Info($"{stdout}");
-
                     if (code != 0)
                     {
-                        _logger.Error($"code:{code} {stderr}");
+                        _logger.Error($"code:{code}");
+                        _logger.Error($"stderr: {stderr}");
+                        _logger.Error($"stdout: {stdout}");
                     }
 
                 }
@@ -439,9 +426,9 @@ namespace WinStart
         {
             this.InvokeIfRequired(_ =>
             {
-                rtbTell.AppendText(s);
-                rtbTell.AppendText(Environment.NewLine);
-                rtbTell.ScrollToCaret();
+                //rtbTell.AppendText(s);
+                //rtbTell.AppendText(Environment.NewLine);
+                //rtbTell.ScrollToCaret();
             });
         }
         #endregion
@@ -474,7 +461,7 @@ namespace WinStart
             LogManager.MinLevelFile = _settings.FileLogLevel;
             LogManager.MinLevelNotif = _settings.NotifLogLevel;
             selector.IndicatorColor = _settings.MarkerColor;
-            selector.DrawFont = _settings.TileFont;
+            selector.DrawFont = _settings.Font;
 
             _settings.Save();
         }
