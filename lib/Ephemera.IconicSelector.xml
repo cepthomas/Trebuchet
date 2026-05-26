@@ -4,6 +4,84 @@
         <name>Ephemera.IconicSelector</name>
     </assembly>
     <members>
+        <member name="T:Ephemera.IconicSelector.SelectorStyle">
+            <summary>Selector style options.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.SelectorStyle.Icon">
+            <summary>Icon of ImageSize above, text block below</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.SelectorStyle.Tile">
+            <summary>Icon of ImageSize left, text block right</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.SelectorStyle.Clip">
+            <summary>Verbatim as provided by client, will clip from top left</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.SelectorStyle.Fill">
+            <summary>Fill/stretch with image</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.SelectorStyle.FitWidth">
+            <summary>Rendered image width from client, height scaled</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.SelectorStyle.FitHeight">
+            <summary>Rendered image height from client, width scaled</summary>
+        </member>
+        <member name="T:Ephemera.IconicSelector.OpMode">
+            <summary>Selector operation mode.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.OpMode.SingleSelect">
+            <summary>One only selection.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.OpMode.MultiSelect">
+            <summary>One or more selection.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.OpMode.Click">
+            <summary>Standard single click.</summary>
+        </member>
+        <member name="T:Ephemera.IconicSelector.ClickEventArgs">
+            <summary>
+            User clicked. If item is not null it's a simple click: OpMode is Click.
+            Else it's a notification that selection(s) changed: OpMode is *Select.
+            </summary>
+        </member>
+        <member name="M:Ephemera.IconicSelector.ClickEventArgs.#ctor(Ephemera.IconicSelector.Item)">
+            <summary>
+            User clicked. If item is not null it's a simple click: OpMode is Click.
+            Else it's a notification that selection(s) changed: OpMode is *Select.
+            </summary>
+        </member>
+        <member name="T:Ephemera.IconicSelector.Config">
+            <summary>Configuration for instance.</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Config.Style">
+            <summary>Selector flavor.</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Config.Mode">
+            <summary>What the mouse click does.</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Config.NumColumns">
+            <summary>How wide.</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Config.ImageSize">
+            <summary>Image size.</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Config.AllowExternalSource">
+            <summary>Allow drag and drop frome external sources - file/folder/url only.</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Config.DrawFont">
+            <summary>Optional font.</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Config.IndicatorColor">
+            <summary>Cosmetics.</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Config.Pad">
+            <summary>Visual space at edges.</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Config.Spacing">
+            <summary>Space between items</summary>
+        </member>
+        <member name="P:Ephemera.IconicSelector.Config.DefaultImage">
+            <summary>Optional if no valid image available.</summary>
+        </member>
         <member name="T:Ephemera.IconicSelector.ItemDataType">
             <summary>Value data type.</summary>
         </member>
@@ -75,28 +153,28 @@
         <member name="P:Ephemera.IconicSelector.ItemDisplay.Item">
             <summary>The owned item.</summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.ItemDisplay.Selected">
+        <member name="P:Ephemera.IconicSelector.ItemDisplay.Selected">
             <summary></summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.ItemDisplay.AllowExternalSource">
-            <summary>Allow drag and drop frome external sources - file/folder/url only.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.ItemDisplay.ImageRect">
-            <summary>Geometry.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.ItemDisplay.TextRect">
-            <summary>Geometry.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.ItemDisplay.IndicatorColor">
-            <summary>Cosmetics.</summary>
         </member>
         <member name="F:Ephemera.IconicSelector.ItemDisplay._dragStart">
             <summary>For differentiating drag from click.</summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.ItemDisplay._lastCursorLoc">
+        <member name="F:Ephemera.IconicSelector.ItemDisplay._cursorLoc">
             <summary>For tracking cursor position inside an ItemDisplay control.</summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.ItemDisplay._dragging">
+        <member name="F:Ephemera.IconicSelector.ItemDisplay._config">
+            <summary>The configuration.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.ItemDisplay._imageRect">
+            <summary>Calculated geometry.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.ItemDisplay._textRect">
+            <summary>Calculated geometry.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.ItemDisplay._size">
+            <summary>Calculated geometry.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.ItemDisplay._anyDragging">
             <summary>Indicates one of the controls is currently dragging.</summary>
         </member>
         <member name="M:Ephemera.IconicSelector.ItemDisplay.#ctor(Ephemera.IconicSelector.Item)">
@@ -104,14 +182,16 @@
             Constructor.
             </summary>
         </member>
+        <member name="M:Ephemera.IconicSelector.ItemDisplay.Init(Ephemera.IconicSelector.Config)">
+            <summary>
+            Calculates geometry of display elements.
+            </summary>
+        </member>
         <member name="M:Ephemera.IconicSelector.ItemDisplay.Dispose(System.Boolean)">
             <summary>
             Clean up any resources being used.
             </summary>
             <param name="disposing">True if managed resources should be disposed.</param>
-        </member>
-        <member name="M:Ephemera.IconicSelector.ItemDisplay.ToString">
-            <summary>Read me</summary>
         </member>
         <member name="M:Ephemera.IconicSelector.ItemDisplay.OnDragEnter(System.Windows.Forms.DragEventArgs)">
             <summary>
@@ -162,98 +242,29 @@
             </summary>
             <param name="pe"></param>
         </member>
-        <member name="M:Ephemera.IconicSelector.ItemDisplay.TraceLine(System.String)">
+        <member name="M:Ephemera.IconicSelector.ItemDisplay.ToString">
+            <summary>Read me</summary>
+        </member>
+        <member name="M:Ephemera.IconicSelector.ItemDisplay.Tell(System.String)">
             <summary>
             Hello.
             </summary>
             <param name="s"></param>
         </member>
-        <member name="T:Ephemera.IconicSelector.SelectorStyle">
-            <summary>Selector style options.</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.SelectorStyle.Icon">
-            <summary>Icon of ImageSize above, text block below</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.SelectorStyle.Tile">
-            <summary>Icon of ImageSize left, text block right</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.SelectorStyle.Clip">
-            <summary>Verbatim as provided by client, will clip from top left</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.SelectorStyle.Fill">
-            <summary>Fill/stretch with image</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.SelectorStyle.FitWidth">
-            <summary>Rendered image width from client, height scaled</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.SelectorStyle.FitHeight">
-            <summary>Rendered image height from client, width scaled</summary>
-        </member>
-        <member name="T:Ephemera.IconicSelector.OpMode">
-            <summary>Selector operation mode.</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.OpMode.SingleSelect">
-            <summary>One only selection.</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.OpMode.MultiSelect">
-            <summary>One or more selection.</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.OpMode.Click">
-            <summary>Standard single click.</summary>
-        </member>
-        <member name="T:Ephemera.IconicSelector.ClickEventArgs">
-            <summary>
-            User clicked. If item is not null it's a simple click: OpMode is Click.
-            Else it's a notification that selection(s) changed: OpMode is *Select.
-            </summary>
-        </member>
-        <member name="M:Ephemera.IconicSelector.ClickEventArgs.#ctor(Ephemera.IconicSelector.Item)">
-            <summary>
-            User clicked. If item is not null it's a simple click: OpMode is Click.
-            Else it's a notification that selection(s) changed: OpMode is *Select.
-            </summary>
-        </member>
         <member name="T:Ephemera.IconicSelector.Selector">
             <summary>API.</summary>
             <summary>Master control internals.</summary>
         </member>
-        <member name="P:Ephemera.IconicSelector.Selector.Style">
-            <summary>Current config.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.Selector.NumColumns">
-            <summary>Current config.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.Selector.ImageSize">
-            <summary>Image size.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.Selector.Mode">
-            <summary>What the mouse click does.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.Selector.AllowExternalSource">
-            <summary>Allow drag and drop frome external sources - file/folder/url only.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.Selector.DrawFont">
-            <summary>Cosmetics.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.Selector.IndicatorColor">
-            <summary>Cosmetics.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.Selector.Pad">
-            <summary>Visual space at edges.</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.Selector.Spacing">
-            <summary>Space between items</summary>
-        </member>
-        <member name="P:Ephemera.IconicSelector.Selector.DefaultImage">
-            <summary>If no valid image available.</summary>
-        </member>
-        <member name="E:Ephemera.IconicSelector.Selector.Click">
-            <summary>Tell client that item was clicked - OpMode = Click.</summary>
-        </member>
         <member name="M:Ephemera.IconicSelector.Selector.#ctor">
             <summary>
-            Constructor.
+            Constructor. Doesn't need much so it can be used in the designer.
             </summary>
+        </member>
+        <member name="M:Ephemera.IconicSelector.Selector.Init(Ephemera.IconicSelector.Config)">
+            <summary>
+            Does the real configuration.
+            </summary>
+            <param name="config">The configuration</param>
         </member>
         <member name="M:Ephemera.IconicSelector.Selector.AddResourceItem(System.String,System.Int32)">
             <summary>
@@ -283,23 +294,26 @@
             </summary>
             <returns>Items.</returns>
         </member>
-        <member name="F:Ephemera.IconicSelector.Selector._style">
-            <summary>Backing field for Style.</summary>
+        <member name="M:Ephemera.IconicSelector.Selector.RemoveItem(Ephemera.IconicSelector.Item)">
+            <summary>
+            Remove items.
+            </summary>
+            <param name="item"></param>
         </member>
-        <member name="F:Ephemera.IconicSelector.Selector._numColumns">
-            <summary>Backing field for NumColumns.</summary>
+        <member name="M:Ephemera.IconicSelector.Selector.GetTotalArea">
+            <summary>
+            Total real estate after populating with items. Does not include scrollbars.
+            </summary>
+            <returns>Items.</returns>
         </member>
-        <member name="F:Ephemera.IconicSelector.Selector._imageSize">
-            <summary>Backing field for ImageSize.</summary>
+        <member name="F:Ephemera.IconicSelector.Selector._config">
+            <summary>Current configg.</summary>
         </member>
         <member name="F:Ephemera.IconicSelector.Selector._itemds">
             <summary>All entries in the collection.</summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.Selector._itemdImageRect">
-            <summary>ItemDisplay geometry.</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.Selector._itemdTextRect">
-            <summary>ItemDisplay geometry.</summary>
+        <member name="F:Ephemera.IconicSelector.Selector._defaultImage">
+            <summary>If no valid image available.</summary>
         </member>
         <member name="F:Ephemera.IconicSelector.Selector._itemdSize">
             <summary>ItemDisplay geometry.</summary>
@@ -313,11 +327,17 @@
         <member name="F:Ephemera.IconicSelector.Selector.IN_TARGET_CENTER">
             <summary>Meta index.</summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.Selector._dirImage">
+        <member name="F:Ephemera.IconicSelector.Selector._bmpDir">
             <summary>For dirs.</summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.Selector._urlImage">
+        <member name="F:Ephemera.IconicSelector.Selector._bmpUrl">
             <summary>If no favicon available.</summary>
+        </member>
+        <member name="F:Ephemera.IconicSelector.Selector.toolTip">
+            <summary>Extra info.</summary>
+        </member>
+        <member name="E:Ephemera.IconicSelector.Selector.Click">
+            <summary>Tell client that item was clicked - OpMode = Click.</summary>
         </member>
         <member name="M:Ephemera.IconicSelector.Selector.Dispose(System.Boolean)">
             <summary>
@@ -362,11 +382,6 @@
             <param name="value">Meaningful for client use</param>
             <param name="index">Where to insert, -1 is append</param>
         </member>
-        <member name="M:Ephemera.IconicSelector.Selector.InitGeometry">
-            <summary>
-            Calculates geometry of display elements.
-            </summary>
-        </member>
         <member name="M:Ephemera.IconicSelector.Selector.UpdateItemsList">
             <summary>
             Called after list changes.
@@ -381,7 +396,7 @@
         </member>
         <member name="M:Ephemera.IconicSelector.Selector.GetItemd(System.Object)">
             <summary>
-            Get the item safely.
+            Get the item display.
             </summary>
             <param name="item">ItemDisplay to test</param>
             <returns>The item if valid</returns>
@@ -397,7 +412,7 @@
             <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
-        <member name="M:Ephemera.IconicSelector.Selector.TraceLine(System.String)">
+        <member name="M:Ephemera.IconicSelector.Selector.Tell(System.String)">
             <summary>
             Debug.
             </summary>

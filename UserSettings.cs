@@ -13,22 +13,6 @@ using Ephemera.IconicSelector;
 namespace WinStart
 {
     [Serializable]
-    public class Target
-    {
-        /// <summary>File path, directory, url.</summary>
-        [Browsable(false)]
-        public string Name { get; set; } = "";
-
-        /// <summary>Group. TODO1</summary>
-        [Browsable(false)]
-        public string Group { get; set; } = "";
-
-        ///// <summary>Pinned, Favorite, recent, ...</summary>
-        //[Browsable(false)]
-        //public bool Pinned { get; set; } = false;
-    };
-
-    [Serializable]
     public sealed class UserSettings : SettingsCore
     {
         #region Persisted Editable Properties
@@ -50,9 +34,6 @@ namespace WinStart
         [Browsable(true)]
         [JsonConverter(typeof(JsonColorConverter))]
         public Color MarkerColor { get; set; } = Color.Blue;
-
-        [JsonConverter(typeof(JsonFontConverter))]
-        public Font Font { get; set; } = new("Calibri", 11, FontStyle.Regular, GraphicsUnit.Point, 0);
 
         //[DisplayName("Root Paths")]
         //[Description("Your favorite places.")]
@@ -76,7 +57,7 @@ namespace WinStart
         #region Persisted Non-editable Properties
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Browsable(false)]
-        public List<Target> Targets { get; set; } = [];
+        public List<string> Targets { get; set; } = [];
         #endregion
     }
 }

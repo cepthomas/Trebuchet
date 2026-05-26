@@ -30,22 +30,11 @@ namespace WinStart
             // 
             // selector
             // 
-            selector.AllowExternalSource = false;
             selector.AutoScroll = true;
             selector.BorderStyle = BorderStyle.FixedSingle;
-            selector.DefaultImage = (Bitmap)resources.GetObject("selector.DefaultImage");
             selector.Dock = DockStyle.Fill;
-            selector.DrawFont = new Font("Calibri", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            selector.ImageSize = new Size(32, 32);
-            selector.IndicatorColor = Color.Purple;
             selector.Location = new Point(0, 26);
-            selector.Mode = OpMode.Click;
-            selector.Name = "selector";
-            selector.NumColumns = 1;
-            selector.Pad = 4;
             selector.Size = new Size(1104, 353);
-            selector.Spacing = 10;
-            selector.Style = SelectorStyle.Icon;
             selector.TabIndex = 7;
             // 
             // toolStrip1
