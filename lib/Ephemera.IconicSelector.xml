@@ -59,7 +59,7 @@
             <summary>Image size.</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.Config.AllowExternalSource">
-            <summary>Allow drag and drop frome external sources - file/folder/url only.</summary>
+            <summary>Allow drag and drop frome external sources - file/folder/url only. TODO1 images?</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.Config.DrawFont">
             <summary>Optional font.</summary>
@@ -77,7 +77,7 @@
             <summary>Space between items.</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.Config.MaxItems">
-            <summary>Trim collection if > 0.</summary>
+            <summary>Trim collection tail if > 0.</summary>
         </member>
         <member name="T:Ephemera.IconicSelector.ItemDataType">
             <summary>Value data type.</summary>
