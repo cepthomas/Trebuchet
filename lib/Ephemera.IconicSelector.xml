@@ -19,12 +19,6 @@
         <member name="F:Ephemera.IconicSelector.SelectorStyle.Fill">
             <summary>Fill/stretch with image</summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.SelectorStyle.FitWidth">
-            <summary>Rendered image width from client, height scaled</summary>
-        </member>
-        <member name="F:Ephemera.IconicSelector.SelectorStyle.FitHeight">
-            <summary>Rendered image height from client, width scaled</summary>
-        </member>
         <member name="T:Ephemera.IconicSelector.OpMode">
             <summary>Selector operation mode.</summary>
         </member>
@@ -70,6 +64,9 @@
         <member name="P:Ephemera.IconicSelector.Config.DrawFont">
             <summary>Optional font.</summary>
         </member>
+        <member name="P:Ephemera.IconicSelector.Config.DefaultImage">
+            <summary>Optional if no valid image available.</summary>
+        </member>
         <member name="P:Ephemera.IconicSelector.Config.IndicatorColor">
             <summary>Cosmetics.</summary>
         </member>
@@ -77,10 +74,10 @@
             <summary>Visual space at edges.</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.Config.Spacing">
-            <summary>Space between items</summary>
+            <summary>Space between items.</summary>
         </member>
-        <member name="P:Ephemera.IconicSelector.Config.DefaultImage">
-            <summary>Optional if no valid image available.</summary>
+        <member name="P:Ephemera.IconicSelector.Config.MaxItems">
+            <summary>Trim collection if > 0.</summary>
         </member>
         <member name="T:Ephemera.IconicSelector.ItemDataType">
             <summary>Value data type.</summary>
@@ -296,7 +293,7 @@
         </member>
         <member name="M:Ephemera.IconicSelector.Selector.RemoveItem(Ephemera.IconicSelector.Item)">
             <summary>
-            Remove items.
+            Remove item.
             </summary>
             <param name="item"></param>
         </member>
@@ -374,7 +371,7 @@
         </member>
         <member name="M:Ephemera.IconicSelector.Selector.AddItem(Ephemera.IconicSelector.ItemDataType,System.String,System.Drawing.Bitmap,System.Object,System.Int32)">
             <summary>
-            Common function to add a new item. Adjusts image for mode.
+            Common function to add a new item. Adjusts image for mode. Trims list.
             </summary>
             <param name="dtype">The value type</param>
             <param name="caption">For display below/next to image</param>

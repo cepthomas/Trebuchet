@@ -18,8 +18,6 @@ using Ephemera.IconicSelector;
 
 // TODO2 target groups, pinned?
 
-
-
 namespace WinStart
 {
     /// <summary>
@@ -33,9 +31,6 @@ namespace WinStart
 
         /// <summary>The settings.</summary>
         readonly UserSettings _settings;
-
-        /// <summary>Save what happens.</summary>
-        readonly List<string> _log = [];
         #endregion
 
         #region Lifecycle
@@ -116,7 +111,7 @@ namespace WinStart
         {
             selector.ContextMenuStrip!.Close();
 
-            switch (e.ClickedItem!.Text)
+            switch (e.ClickedItem!.Text) // TODO1 which? put in lib?
             {
                 case "Add File":
                 case "Add Folder":
@@ -192,10 +187,9 @@ namespace WinStart
             if (e.ClickedItem is not null)
             {
                 // Item click.
-                //_logger.Info($"Selection -> [{e.ClickedItem.Caption}] [{e.ClickedItem.Value}]");
-
                 string fn;
                 List<string> args;
+                //_logger.Info($"Selection -> [{e.ClickedItem.Caption}] [{e.ClickedItem.Value}]");
 
                 switch (e.ClickedItem.DataType)
                 {
@@ -249,10 +243,7 @@ namespace WinStart
         /// <param name="s"></param>
         void Tell(string s)
         {
-            this.InvokeIfRequired(_ =>
-            {
-                _log.Add(s + Environment.NewLine);
-            });
+            // TODO1 ?? this.InvokeIfRequired(_ => { _log.Add(s + Environment.NewLine); });
         }
 
         /// <summary>
@@ -261,30 +252,7 @@ namespace WinStart
         void Settings_Click(object? sender, EventArgs e)
         {
             var changes = SettingsEditor.Edit(_settings, "User Settings", 450);
-
-            // Detect changes of interest.
-            bool restart = false;
-            foreach (var (name, cat) in changes)
-            {
-                switch (name)
-                {
-                    case "Style":
-                    case "ImageSize":
-                    case "NumColumns":
-                    case "MarkerColor":
-                    case "Font":
-                        restart = true;
-                        break;
-                }
-            }
-            if (restart)
-            {
-                MessageBox.Show("Restart required for device changes to take effect");
-            }
-
-            LogManager.MinLevelFile = _settings.FileLogLevel;
-            LogManager.MinLevelNotif = _settings.NotifLogLevel;
-
+            MessageBox.Show("Restart required for changes to take effect");
             _settings.Save();
         }
 

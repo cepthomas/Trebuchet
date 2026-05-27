@@ -6,8 +6,6 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>disable</ImplicitUsings>
-    <!-- <Platforms>x64</Platforms> -->
-    <!-- <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
     <OutputPath>bin\</OutputPath>
 
     <NoWarn>CS0162;CS1591;SYSLIB1054;</NoWarn>
