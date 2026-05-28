@@ -68,6 +68,7 @@ namespace WinStart
             {
                 AllowExternalSource = true,
                 IndicatorColor = _settings.MarkerColor,
+                EnableToolTip = true,
                 Spacing = 10,
                 Pad = 8,
                 Mode = OpMode.Click,

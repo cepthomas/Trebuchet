@@ -61,6 +61,9 @@
         <member name="P:Ephemera.IconicSelector.Config.AllowExternalSource">
             <summary>Allow drag and drop frome external sources - file/folder/url only. TODO1 images?</summary>
         </member>
+        <member name="P:Ephemera.IconicSelector.Config.EnableToolTip">
+            <summary>If enabled, show item ToString() when hovering.</summary>
+        </member>
         <member name="P:Ephemera.IconicSelector.Config.DrawFont">
             <summary>Optional font.</summary>
         </member>
@@ -330,7 +333,7 @@
         <member name="F:Ephemera.IconicSelector.Selector._bmpUrl">
             <summary>If no favicon available.</summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.Selector.toolTip">
+        <member name="F:Ephemera.IconicSelector.Selector._toolTip">
             <summary>Extra info.</summary>
         </member>
         <member name="E:Ephemera.IconicSelector.Selector.Click">
