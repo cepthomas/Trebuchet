@@ -171,7 +171,7 @@
         <member name="F:Ephemera.IconicSelector.ItemDisplay._textRect">
             <summary>Calculated geometry.</summary>
         </member>
-        <member name="F:Ephemera.IconicSelector.ItemDisplay._size">
+        <member name="F:Ephemera.IconicSelector.ItemDisplay._clientSize">
             <summary>Calculated geometry.</summary>
         </member>
         <member name="F:Ephemera.IconicSelector.ItemDisplay._anyDragging">
@@ -213,7 +213,7 @@
         </member>
         <member name="M:Ephemera.IconicSelector.ItemDisplay.OnDragDrop(System.Windows.Forms.DragEventArgs)">
             <summary>
-            Process dropped payload.
+            User dropped payload.
             </summary>
             <param name="e"></param>
             <exception cref="T:System.InvalidOperationException"></exception>
@@ -307,7 +307,7 @@
             <returns>Items.</returns>
         </member>
         <member name="F:Ephemera.IconicSelector.Selector._config">
-            <summary>Current configg.</summary>
+            <summary>Current config.</summary>
         </member>
         <member name="F:Ephemera.IconicSelector.Selector._itemds">
             <summary>All entries in the collection.</summary>

@@ -57,11 +57,11 @@ namespace WinStart
 
             Text = $"WinStart {MiscUtils.GetVersionString()}";
 
-            // Default - big X.
-            Bitmap defbmp = new(32, 32);
-            using Graphics gr = Graphics.FromImage(defbmp);
-            gr.Clear(Color.LightSalmon);
-            gr.DrawString($"????", Font, Brushes.Black, 2, 2);
+            // // Default - big X.
+            // Bitmap defbmp = new(32, 32);
+            // using Graphics gr = Graphics.FromImage(defbmp);
+            // gr.Clear(Color.LightSalmon);
+            // gr.DrawString($"????", Font, Brushes.Black, 2, 2);
 
             // Init selector configuration.
             var config = new Config()
@@ -93,7 +93,7 @@ namespace WinStart
             _settings.Targets.ForEach(item => selector.AddResourceItem(item));
             // Debug.DoDummy().ForEach(item => selector.AddResourceItem(item));
 
-            // Size and location. TODO1 probably user option? always/popup/?
+            // Size and location. TODO1 always/popup/?  user option?
             FormBorderStyle = FormBorderStyle.SizableToolWindow;// FixedToolWindow;
             StartPosition = FormStartPosition.Manual;
             Size = new(selector.GetTotalArea().Width + SystemInformation.VerticalScrollBarWidth, 600);
