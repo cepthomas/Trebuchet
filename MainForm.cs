@@ -16,7 +16,8 @@ using Ephemera.NBagOfUis;
 using Ephemera.IconicSelector;
 
 
-// TODO2 target groups, pinned?
+// TODO target groups, pinned, recent, ...?
+
 
 namespace WinStart
 {
@@ -57,12 +58,6 @@ namespace WinStart
 
             Text = $"WinStart {MiscUtils.GetVersionString()}";
 
-            // // Default - big X.
-            // Bitmap defbmp = new(32, 32);
-            // using Graphics gr = Graphics.FromImage(defbmp);
-            // gr.Clear(Color.LightSalmon);
-            // gr.DrawString($"????", Font, Brushes.Black, 2, 2);
-
             // Init selector configuration.
             var config = new Config()
             {
@@ -78,64 +73,24 @@ namespace WinStart
             };
             selector.Init(config);
 
-            // Hook selector events.
+            // Selector events.
             selector.Click += Selector_Click;
-
-            // Selector menu.
             selector.ContextMenuStrip = new();
-            selector.ContextMenuStrip.Items.Add("Add File");
-            selector.ContextMenuStrip.Items.Add("Add Folder");
-            selector.ContextMenuStrip.Items.Add("Paste");
-            selector.ContextMenuStrip.Items.Add("Remove");
-            selector.ContextMenuStrip.ItemClicked += Menu_ItemClicked;
+            selector.ContextMenuStrip.Opening += ContextMenuStrip_Opening;
+            selector.ContextMenuStrip.ItemClicked += ContextMenuStrip_ItemClicked;
 
             // Init the data.
             _settings.Targets.ForEach(item => selector.AddResourceItem(item));
-            // Debug.DoDummy().ForEach(item => selector.AddResourceItem(item));
 
-            // Size and location. TODO1 always/popup/?  user option?
-            FormBorderStyle = FormBorderStyle.SizableToolWindow;// FixedToolWindow;
-            StartPosition = FormStartPosition.Manual;
-            Size = new(selector.GetTotalArea().Width + SystemInformation.VerticalScrollBarWidth, 600);
+            // TODO Best way to start up? maybe setting?
+            ShowInTaskbar = true;
+            ShowIcon = true;
             WindowState = FormWindowState.Normal;
             //WindowState = FormWindowState.Minimized;
-            var pos = Cursor.Position;
-            Location = new Point(200, 200);
-        }
-
-        /// <summary>
-        /// User wants to do something.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void Menu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
-        {
-            selector.ContextMenuStrip!.Close();
-
-            switch (e.ClickedItem!.Text) // TODO1 which? put in lib?
-            {
-                case "Add File":
-                case "Add Folder":
-                    CommonOpenFileDialog dialog = new()
-                    {
-                        InitialDirectory = @"%APPDATA%\Microsoft\Windows\Start Menu\Programs", // TODO1 from settings?
-                        IsFolderPicker = e.ClickedItem!.Text == "Add Folder"
-                    };
-                    if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                    {
-                        selector.AddResourceItem(dialog.FileName);
-                    }
-                    break;
-
-                case "Paste":
-                    selector.AddResourceItem(Clipboard.GetText());
-                    break;
-
-                case "Remove":
-                    var sels = selector.GetSelectedItems();
-                    sels.ForEach(sel => selector.RemoveItem(sel));
-                    break;
-            }
+            FormBorderStyle = FormBorderStyle.FixedToolWindow; // SizableToolWindow
+            Size = new(selector.GetTotalArea().Width + SystemInformation.VerticalScrollBarWidth, 600);
+            StartPosition = FormStartPosition.Manual;
+            Location =  new(Screen.PrimaryScreen!.Bounds.Width / 2 - Width / 2, Screen.PrimaryScreen!.Bounds.Height - Height - 50); // taskbar
         }
 
         /// <summary>
@@ -235,6 +190,65 @@ namespace WinStart
                 }
             }
         }
+
+        /// <summary>
+        /// User wants to do something.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void ContextMenuStrip_Opening(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            selector.ContextMenuStrip!.Items.Clear();
+
+            selector.ContextMenuStrip.Items.Add("Add File");
+            selector.ContextMenuStrip.Items.Add("Add Folder");
+            selector.ContextMenuStrip.Items.Add("Settings");
+
+            if (selector.GetFocusedItem() != null)
+            {
+                selector.ContextMenuStrip.Items.Add("Remove");
+            }
+        }
+
+        /// <summary>
+        /// User wants to do something.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void ContextMenuStrip_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
+        {
+            selector.ContextMenuStrip!.Close();
+
+            switch (e.ClickedItem!.Text)
+            {
+                case "Add File":
+                case "Add Folder":
+                    CommonOpenFileDialog dialog = new()
+                    {
+                        InitialDirectory = @"TODO from settings?",
+                        IsFolderPicker = e.ClickedItem!.Text == "Add Folder"
+                    };
+                    if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                    {
+                        selector.AddResourceItem(dialog.FileName);
+                    }
+                    break;
+
+                case "Settings":
+                    var changes = SettingsEditor.Edit(_settings, "User Settings", 450);
+                    MessageBox.Show("Restart required for changes to take effect");
+                    _settings.Save();
+                    break;
+
+                case "Remove":
+                    var item = selector.GetFocusedItem();
+                    if (item != null)
+                    {
+                        selector.RemoveItem(item);
+                    }
+                    break;
+            }
+        }
         #endregion
 
         #region Privates
@@ -244,17 +258,7 @@ namespace WinStart
         /// <param name="s"></param>
         void Tell(string s)
         {
-            // TODO1 ?? this.InvokeIfRequired(_ => { _log.Add(s + Environment.NewLine); });
-        }
-
-        /// <summary>
-        /// Edit the options in a property grid.
-        /// </summary>
-        void Settings_Click(object? sender, EventArgs e)
-        {
-            var changes = SettingsEditor.Edit(_settings, "User Settings", 450);
-            MessageBox.Show("Restart required for changes to take effect");
-            _settings.Save();
+            Console.WriteLine(s);
         }
 
         /// <summary>
