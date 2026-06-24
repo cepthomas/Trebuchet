@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace WinStart
+namespace Trebuchet
 {
     internal static class Program
     {

@@ -4,7 +4,7 @@ using Ephemera.NBagOfUis;
 using Ephemera.IconicSelector;
 
 
-namespace WinStart
+namespace Trebuchet
 {
     partial class MainForm
     {

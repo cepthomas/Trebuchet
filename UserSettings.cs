@@ -10,7 +10,7 @@ using Ephemera.NBagOfUis;
 using Ephemera.IconicSelector;
 
 
-namespace WinStart
+namespace Trebuchet
 {
     [Serializable]
     public sealed class UserSettings : SettingsCore

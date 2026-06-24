@@ -1,6 +1,4 @@
-# WinStart
+# Trebuchet
 
-Another windows start replacement.
-
-Very much a WIP...
+It launches heavy applications.
 

@@ -18,8 +18,22 @@ using Ephemera.IconicSelector;
 
 // TODO target groups, pinned, recent, ...?
 
+// Windows standard locations:  %PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs
+// WinX/Start context menu:  %LOCALAPPDATA%\Microsoft\Windows\WinX\GroupX
+// Plain files:
+//   @"C:\Users\cepth\OneDrive\Tools\backup_loose.py",
+//   @"C:\Users\cepth\OneDrive\Tools\Wavosaur.exe",
+// Plain folders
+//   @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
+//   @"C:\Users\cepth\OneDrive\OneDriveDocuments",
+// URLs:
+//   @"https://www.bobrosslipsum.com/",
+// Others (probably not usefule):
+//   User Start menu => %APPDATA%\Microsoft\Windows\Start Menu\Programs\+subdirs...
+//   Taskbar pinned => %APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar
+//   Recent files => %APPDATA%\Microsoft\Windows\Recent and %APPDATA%\Microsoft\Office\Recent
 
-namespace WinStart
+namespace Trebuchet
 {
     /// <summary>
     /// The application.
@@ -46,7 +60,7 @@ namespace WinStart
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 
             // Load settings first before initializing.
-            string appDir = MiscUtils.GetAppDataDir("WinStart", "Ephemera");
+            string appDir = MiscUtils.GetAppDataDir("Trebuchet", "Ephemera");
             _settings = (UserSettings)SettingsCore.Load(appDir, typeof(UserSettings));
 
             // Init logging.
@@ -56,7 +70,7 @@ namespace WinStart
             LogManager.LogMessage += (object? sender, LogMessageEventArgs e) => { Tell(e.Message); };
             LogManager.Run(logFileName, 50000);
 
-            Text = $"WinStart {MiscUtils.GetVersionString()}";
+            Text = $"Trebuchet {MiscUtils.GetVersionString()}";
 
             // Init selector configuration.
             var config = new Config()
