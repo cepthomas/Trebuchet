@@ -154,10 +154,10 @@
             <summary>The owned item.</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.ItemDisplay.Selected">
-            <summary></summary>
+            <summary>User picked me.</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.ItemDisplay.Highlight">
-            <summary></summary>
+            <summary>Mouse is over me. TODO implement</summary>
         </member>
         <member name="P:Ephemera.IconicSelector.ItemDisplay.Dragged">
             <summary>Indicates which of the controls is currently being dragged.</summary>
